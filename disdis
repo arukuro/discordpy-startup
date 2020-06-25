@@ -1,0 +1,93 @@
+import requests
+
+url = 'http://weather.livedoor.com/forecast/webservice/json/v1'
+# 千葉市を設定
+payload = {'city': '130010'}
+tenki_data = requests.get(url, params=payload).json()
+# print(tenki_data)
+tenki=[tenki_data['title'],tenki_data['forecasts'][0]['date'],tenki_data['forecasts'][0]['telop'],tenki_data['forecasts'][1]['date'],tenki_data['forecasts'][1]['telop']]
+
+import discord
+import random
+randam_saba=0
+randam_hant=0
+hatugenn="アルクロマジ神"
+saba_list=["医師", "弁護士","泥棒","庭師","マジシャン","冒険家","傭兵","空軍","祭司","機械技師","オフェンス","心眼","調香師","カウボーイ","踊り子","占い師","納棺師","炭鉱者","呪術師","野人","曲芸師","一等航海士","バーメイド","ポストマン","墓守","囚人","幸運児"]
+hant_list=["レオ","ピエロ","しか","リッパー","蜘蛛","芸者","白黒無常","ジョゼフ","バルク","タコ","夢の魔女","泣き虫","ルキノ","女王","ボンボン","アン","バイオリニスト"]
+client = discord.Client()
+@client.event
+async def on_ready():
+    print('Logged in as')
+    print(client.user.name)
+    print(client.user.id)
+    print('------')
+    
+@client.event
+async def on_message(message):
+    if message.content == 'バルス':
+        if message.author.guild_permissions.administrator:
+            await message.channel.purge()
+            await message.channel.send('塵一つ残らないね！')
+        else:
+            await message.channel.send('何様のつもり？')
+    elif message.content=="おはよう":
+        if message.author.name=="ナメクヂ":
+            m = "おはクジ"
+            await message.channel.send(m)
+        elif client.user != message.author:
+            m = "おはようございます"+message.author.name+"さん"
+            await message.channel.send(m)
+    elif message.content=="なんだこいつ":
+        if client.user != message.author:
+            await message.channel.send("NN.BOTだお")
+    elif message.content=="ナメクジ":
+        if client.user != message.author:
+            await message.channel.send("ナメナメ")
+    elif message.content=="ナメクジは":
+        if client.user != message.author:
+            await message.channel.send("変態")
+    elif message.content=="ランサバ" or message.content=="ランダムサバイバー":
+        if client.user != message.author:
+            randam_saba=random.randint(0,26)
+            for i in range(26):
+                if randam_saba==i:
+                    await message.channel.send(saba_list[i])
+    elif message.content=="ランハン" or message.content=="ランダムハンター":
+        if client.user != message.author:
+            randam_hant=random.randint(0,16)
+            for w in range(16):
+                if randam_hant==w:
+                    await message.channel.send(hant_list[w])
+    elif message.content=="天気":
+        if client.user != message.author:
+            main_text = ""
+            for i in tenki:
+                main_text+="{}  \n".format(i)
+            await message.channel.send(main_text)
+    elif message.content=="パー" or "チョキ" or "グー":
+        if client.user != message.author:
+            deta = {"グー":0, "チョキ":1, "パー":2}
+            deta2 = {0:"グー",1:"チョキ",2:"パー"}
+            a = 0
+            deta_choice = random.randint(0,2)
+            user = message.content
+                
+            user = deta[user]
+            a_1=(deta_choice-user+3)%3
+            if a_1==0:
+                await message.channel.send("相手の手は"+ deta2[deta_choice] +"であいこです\nもう一度")
+            elif a_1==1:
+                await message.channel.send("相手の手は" + deta2[deta_choice] + " で、勝ちです。")
+                a += 1
+            elif a_1==2:
+                await message.channel.send("相手の手は" + deta2[deta_choice] + " で、負けです。")
+                a += 1
+    elif message.author.name=="   ":
+        #if message.content.startswith(hatugenn):
+            #a=0
+        #else :
+        await message.delete()
+        await message.channel.send ("見せられないよ")
+            #await message.channel.send(message.author.name+"は'"+hatugenn+"'って入れないと発言できないよ！！！")
+    else :
+        nannmonai=0
